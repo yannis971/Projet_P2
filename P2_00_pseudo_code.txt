@@ -1,0 +1,108 @@
+## Le pseudo code ci-dessous permet de récupérer la liste des produits d'une catégorie d'ouvrage fixée
+## L'url choisie est http://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html 
+
+##
+## Cette fonction renvoie un objet BeautifulSoup à partir d'une url passée en paramètres
+##
+Fonction creer_objet_soup(url) :
+	Essayer le bloc de code ci-dessous
+		page = urlopen(url)
+		html = page.read().decode("utf-8")
+		soup = BeautifulSoup(html, "html.parser")
+	En cas d'exception :
+		fermer le fichier nom_fichier.csv
+		arreter le script avec un message d'erreur sur la sortie d'erreur standard (console)
+	Sinon :
+		retourner l'objet soup
+Fin Fonction
+
+##
+## Fonction principale (main)
+##
+
+url = http://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html
+
+dans la variable url, récupérer la séquence située entre "http://books.toscrape.com/catalogue/category/books/" et "/index.html" et la stocker dans la variable nom_fichier
+
+créer un fichier nom_fichier.csv en écriture
+
+écrire l'entete du fichier nom_fichier.csv
+
+nombre_de_produits_extraits = 0
+ 
+page_suivante = True
+
+Ecrire sur la sortie standard (console) un message de début d'extraction des données 
+
+
+## Boucle sur la catégorie de produits tant qu'il existe une page suivante dans la catégorie
+
+Tant que page_suivante :
+
+	page_liste_produits = creer_objet_soup(url)
+
+	Boucle sur la liste des balises <article class="product_pod"> de la page page_liste_produits 
+	
+		Initialiser les variables 
+			product_page_url
+			universal_ product_code
+			title
+			price_including_tax
+			price_excluding_tax
+			number_available
+			product_description
+			category
+			review_rating
+			image_url
+
+		Dans la balise <div class="image_container"> enfant de la balise lue
+			Récupérer la valeur de l'attribut href de la balise <a> et la stocker dans la variable product_page_url
+			Récupérer la valeur de l'attribut src de la balise <img> et la stocker dans la variable image_url
+		
+		Dans la balise <h3> enfant de la balise lue
+			Récupérer la valeur de l'attribut title de la balise <a> et la stocker dans la variable title
+	
+		## Créer un nouvel objet BeautifulSoup à partir de l'url product_page_url
+		page_detail_produit = creer_objet_soup(product_page_url)
+			
+		## Analyse de la page Détail Produit
+		
+		Rechercher la balise <a> respectant le pattern  <a href="../category/books/*/index.html"> et mettre le contenu de cette balise <a> dans la variable category
+	
+		Rechercher la balise <div id="product_description" class="sub-header">
+		Récuperer le contenu de la balise <p> qui suit et la stocker dans la variable product_description 
+		
+	
+		Rechercher la balise <table class="table table-striped">
+		Lire chaque ligne du tableau 
+			Si on est sur un header <th>UPC</th> mettre le contenu de la cellule td dans la variable universal_ product_code
+			Si on est sur un header <th>Price (incl. tax)</th> mettre le contenu de la cellule td dans la variable price_including_tax
+			Si on est sur un header <th>Price (excl. tax)</th> mettre le contenu de la cellule td dans la variable price_excluding_tax			
+			Si on est sur un header <th>Availability</th> récupérer la suite de caractérères numériques et la mettre dans la variable number_available
+			Si on est sur un header <th>Number of reviews</th> mettre le contenu de la cellule td dans la variable review_rating
+		
+		## Fin de l'analyse de page Détail Produit : on écrit les données du produit dans le fichier
+		Ecrire dans le fichier nom_fichier.csv les variables 
+			product_page_url
+			universal_ product_code
+			title
+			price_including_tax
+			price_excluding_tax
+			number_available
+			product_description
+			category
+			review_rating
+			image_url
+		
+		Incrémenter la variable nombre_de_produits_extraits
+	 
+	Rechercher la balise <li class="next"> dans la page page_liste_produits
+	Si non trouvé :
+		page_suivante = False
+	Sinon :
+		Récupérer la valeur de l'attribut href de la balise <a> et la stocker dans la variable url
+
+Fermer le fichier nom_fichier.csv		
+
+Ecrire sur la sortie standard (console) un message de fin d'extraction des données et le nombre de produits extraits (variable nombre_de_produits_extraits)
+
