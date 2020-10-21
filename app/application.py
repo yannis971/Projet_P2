@@ -87,9 +87,9 @@ class Application:
                 recorder = Recorder(self.url, self.runLevel)
                 recorder.saveProduct(product)
             elif self.runLevel == "CATEGORY":
-                categoryId, listOfProducts = Parser().parseCategory(self.url)
+                categoryId = Parser().generateCategoryId(self.url)
                 category = Category(categoryId)
-                category.feedProducts(listOfProducts)
+                category.feedProducts(Parser().parseCategory(categoryId, self.url))
                 #category.display()
                 recorder = Recorder(self.url, self.runLevel)
                 recorder.saveCategory(category)
