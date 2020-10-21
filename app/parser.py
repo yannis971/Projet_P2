@@ -8,18 +8,22 @@ from bs4 import BeautifulSoup
 from . import parametres
 
 
-
-
-
 class Parser:
+    """
+        Class with methods to parse an URL and different objects on Application class such as
+        Product
+        Category
+        Categories
+    """
 
     def __init__(self):
         pass
 
-    def createBeautifulSoupObject(self, url):
+    @staticmethod
+    def createBeautifulSoupObject(url):
         """
-    		returns an object BeautifulSoup from a given url
-    	"""
+        returns an object BeautifulSoup from a given url
+        """
         try:
             page = urlopen(url)
             html = page.read().decode("utf-8")
@@ -33,9 +37,9 @@ class Parser:
     @staticmethod
     def parseURL(url):
         """
-    	parse the url given as parameter and
-    	returns an object ParseResult
-    	"""
+        parse the url given as parameter and
+        returns an object ParseResult
+        """
         try:
             parseResult = urlparse(url)
         except Exception as e:
@@ -46,22 +50,20 @@ class Parser:
 
     def parseProduct(self, url):
         """
-		parse the url given as parameter and
-		return a tuple with the data below :
-			product_page_url
-			universal_ product_code (upc)
-			title
-			price_including_tax
-			price_excluding_tax
-			number_available
-			product_description
-			category
-			review_rating
-			image_url
-		"""
-
+        parse the url given as parameter and
+        return a tuple with the data below :
+        product_page_url
+        universal_ product_code (upc)
+        title
+        price_including_tax
+        price_excluding_tax
+        number_available
+        product_description
+        category
+        review_rating
+        image_url
+        """
         # Initialize variables
-
         product_page_url = url
         universal_product_code = ""
         title = ""

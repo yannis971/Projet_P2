@@ -6,13 +6,17 @@ from .recorder import Recorder
 
 
 class Product:
+    """
+        Class describing a product
+    """
     def __init__(self, valeur):
         (self.productPageUrl, self.universalProductCode, self.title,
          self.priceIncludingTax, self.priceExcludingTax, self.numberAvailable,
          self.productDescription, self.category, self.reviewRating, self.imageUrl) = valeur
 
     def __str__(self):
-        return self.universalProductCode + ' ; ' + self.productPageUrl + ' ; ' + self.title + ' ; ' + ' ; ' + self.reviewRating
+        return self.universalProductCode + ' ; ' + self.productPageUrl + ' ; ' + self.title + ' ; ' + ' ; ' \
+               + self.reviewRating
 
     def display(self):
         print("=======================================")
@@ -30,9 +34,10 @@ class Product:
         print("imageUrl :", self.imageUrl)
 
 
-
 class Application:
-
+    """
+        Class describing the application
+    """
     def __init__(self, url):
         self.url = url
         self.runLevel = None
@@ -51,15 +56,14 @@ class Application:
                 self.runLevel = "PRODUCT"
             else:
                 print("application level undefined")
-        self.product = None
 
     def run(self):
         if self.runLevel:
             if self.runLevel == "PRODUCT":
-                self.product = Product(Parser().parseProduct(self.url))
-                self.product.display()
+                product = Product(Parser().parseProduct(self.url))
+                product.display()
                 recorder = Recorder(self.url, self.runLevel)
-                recorder.saveProduct(self.product)
+                recorder.saveProduct(product)
             elif self.runLevel == "CATEGORY":
                 pass
             else:
