@@ -12,10 +12,17 @@ class Product:
     """
         Class describing a product
     """
-    def __init__(self, valeur):
-        (self.product_page_url, self.universal_product_code, self.title,
-         self.price_including_tax, self.price_excluding_tax, self.number_available,
-         self.product_description, self.category, self.review_rating, self.image_url) = valeur
+    def __init__(self, data):
+        self.product_page_url = data['product_page_url']
+        self.universal_product_code = data['universal_product_code']
+        self.title = data['title']
+        self.price_including_tax = data['price_including_tax']
+        self.price_excluding_tax = data['price_excluding_tax']
+        self.number_available = data['number_available']
+        self.product_description = data['product_description']
+        self.category = data['category']
+        self.review_rating = data['review_rating']
+        self.image_url = data['image_url']
 
     def __str__(self):
         return self.universal_product_code + ' ; ' + self.product_page_url + ' ; ' \
