@@ -106,17 +106,22 @@ class Parser:
         return (product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax,
                 number_available, product_description, category, review_rating, image_url)
 
-    def parseCategory(self, url):
+    def generateCategoryId(self, url):
         """
-            parse the url given given as parameter and
-            returns a category ID and a list of tuples corresponding to the category's products
+            parses the url given as parameter and
+            return a categoryId
         """
-        # Initialize variables
         path = self.parseURL(url).path.strip()
         positionDebut = len(parametres.CATEGORY)
         liste = (path[positionDebut:]).split('/')
-        categoryId = liste[0]
-        listOfProducts = []
+        return liste[0]
+
+    def parseCategory(self, categoryId, url):
+        """
+            parse the url given given as parameter and
+            generates an object generator on a list of tuples corresponding to the category's products
+        """
+        # Initialize variables
         currentUrl = url
 
         # Parsing datas of the category
@@ -126,7 +131,7 @@ class Parser:
                 for balise_h3 in soup.find_all('h3'):
                     lien = balise_h3.find('a').attrs['href'].replace("../", "")
                     productUrl = "http://" + parametres.NETLOC + parametres.PRODUCT + lien
-                    listOfProducts.append(self.parseProduct(productUrl))
+                    yield self.parseProduct(productUrl)
                 balise_next = soup.find('li', class_='next')
                 if balise_next:
                     lien = balise_next.find('a').attrs['href'].replace("../", "")
@@ -138,8 +143,6 @@ class Parser:
                     break
             else:
                 break
-
-        return categoryId, listOfProducts
 
     def parseCategories(self, url):
         pass
