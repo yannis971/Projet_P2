@@ -23,7 +23,9 @@ class Recorder:
             pass
 
     def saveProduct(self, product):
-
+        """
+            Saves a product into a csv file
+        """
         data = {'product_page_url': [product.productPageUrl, ],
                 'universal_ product_code': [product.universalProductCode, ],
                 'title': [product.title, ],
@@ -34,5 +36,24 @@ class Recorder:
                 'category': [product.category, ],
                 'review_rating': [product.reviewRating, ],
                 'image_url': [product.imageUrl, ]}
+        df = pd.DataFrame(data)
+        df.to_csv(self.nomFichier, sep=';')
+
+    def saveCategory(self, category):
+        """
+            Saves a category of products into a csv file
+        """
+
+        self.nomFichier = category.categoryId + '.csv'
+        data = {'product_page_url': [product.productPageUrl for product in category.listOfProducts],
+                'universal_ product_code': [product.universalProductCode for product in category.listOfProducts],
+                'title': [product.title for product in category.listOfProducts],
+                'price_including_tax': [product.priceIncludingTax for product in category.listOfProducts],
+                'price_excluding_tax': [product.priceExcludingTax for product in category.listOfProducts],
+                'number_available': [product.numberAvailable for product in category.listOfProducts],
+                'product_description': [product.productDescription for product in category.listOfProducts],
+                'category': [product.category for product in category.listOfProducts],
+                'review_rating': [product.reviewRating for product in category.listOfProducts],
+                'image_url': [product.imageUrl for product in category.listOfProducts]}
         df = pd.DataFrame(data)
         df.to_csv(self.nomFichier, sep=';')

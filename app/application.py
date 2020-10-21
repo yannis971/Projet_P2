@@ -34,6 +34,28 @@ class Product:
         print("imageUrl :", self.imageUrl)
 
 
+class Category:
+    """
+        Classe describing a category of books
+    """
+    def __init__(self, categoryId):
+        self.categoryId = categoryId
+        self.listOfProducts = []
+
+    def feedProducts(self, listOfProducts):
+        self.listOfProducts = [Product(item) for item in listOfProducts]
+
+    def display(self):
+        print("================================================================")
+        print("Affichage Category {} dans la console".format(self.categoryId))
+        print("================================================================")
+        for product in self.listOfProducts:
+            product.display()
+        print("================================================================")
+        print(" {} products in Category {}".format(len(self.listOfProducts), self.categoryId))
+        print("================================================================")
+
+
 class Application:
     """
         Class describing the application
@@ -65,7 +87,12 @@ class Application:
                 recorder = Recorder(self.url, self.runLevel)
                 recorder.saveProduct(product)
             elif self.runLevel == "CATEGORY":
-                pass
+                categoryId, listOfProducts = Parser().parseCategory(self.url)
+                category = Category(categoryId)
+                category.feedProducts(listOfProducts)
+                #category.display()
+                recorder = Recorder(self.url, self.runLevel)
+                recorder.saveCategory(category)
             else:
                 pass
         else:
