@@ -57,3 +57,11 @@ class Recorder:
                 'image_url': [product.imageUrl for product in category.listOfProducts]}
         df = pd.DataFrame(data)
         df.to_csv(self.nomFichier, sep=';')
+
+    def saveCategories(self, listOfCategories):
+        """
+            Saves a list of categories of products
+            Each catgory in its proper csv file
+        """
+        for category in listOfCategories:
+            self.saveCategory(category)

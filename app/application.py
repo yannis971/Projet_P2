@@ -90,10 +90,17 @@ class Application:
                 categoryId = Parser().generateCategoryId(self.url)
                 category = Category(categoryId)
                 category.feedProducts(Parser().parseCategory(categoryId, self.url))
-                #category.display()
                 recorder = Recorder(self.url, self.runLevel)
                 recorder.saveCategory(category)
             else:
-                pass
+                listOfCategories = []
+                print("Parsing data ...")
+                for (categoryId, listOfProducts) in Parser().parseCategories(self.url):
+                    category = Category(categoryId)
+                    category.feedProducts(listOfProducts)
+                    listOfCategories.append(category)
+                print("Saving data ...")
+                recorder = Recorder(self.url, self.runLevel)
+                recorder.saveCategories(listOfCategories)
         else:
             print("application run level {} not defined".format(self.runLevel))

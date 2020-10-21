@@ -80,7 +80,10 @@ class Parser:
         if soup:
             title = soup.h1.string.strip()
             image_url = parametres.NETLOC + '/' + soup.img.attrs['src'].replace("../", "")
-            product_description = soup.find(id="product_description").find_next_sibling().string.strip()
+            try:
+                product_description = soup.find(id="product_description").find_next_sibling().string.strip()
+            except AttributeError as e:
+                print("parseProduct Exception : ", e)
             for balise_a in soup.find_all('a'):
                 attr_href = balise_a.attrs['href']
                 if attr_href.startswith("../category/books/"):
@@ -118,7 +121,7 @@ class Parser:
 
     def parseCategory(self, categoryId, url):
         """
-            parse the url given given as parameter and
+            parses the url given given as parameter and
             generates an object generator on a list of tuples corresponding to the category's products
         """
         # Initialize variables
@@ -145,4 +148,18 @@ class Parser:
                 break
 
     def parseCategories(self, url):
-        pass
+        """
+            parses the url given as parameter and
+            returns a list of tuples corresponding to the categories
+        """
+        listOfCategories = []
+        soup = self.createBeautifulSoupObject(url)
+        i = 0
+        if soup:
+            for balise_a in soup.find_all('a'):
+                if balise_a.attrs['href'].startswith(parametres.CATEGORY[1:]):
+                    urlCategory = "http://" + parametres.NETLOC + '/' + balise_a.attrs['href']
+                    categoryId = self.generateCategoryId(urlCategory)
+                    listOfProducts = self.parseCategory(categoryId, urlCategory)
+                    listOfCategories.append((categoryId, listOfProducts))
+        return listOfCategories

@@ -1,6 +1,6 @@
 # -*-coding:utf-8 -*
 
-url = "http://books.toscrape.com/catalogue/category/books/mystery_3/index.html"
+url = "http://books.toscrape.com/"
 
 NETLOC = "books.toscrape.com"
 SITE = "/"
