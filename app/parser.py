@@ -1,4 +1,8 @@
 # -*-coding:utf-8 -*
+"""
+Module parser avec une classe Parser pour scrapper les données
+"""
+
 from urllib.parse import urlparse
 
 from urllib.request import urlopen
@@ -20,7 +24,7 @@ class Parser:
         pass
 
     @staticmethod
-    def createBeautifulSoupObject(url):
+    def create_beautiful_soup_object(url):
         """
         returns an object BeautifulSoup from a given url
         """
@@ -28,27 +32,27 @@ class Parser:
             page = urlopen(url)
             html = page.read().decode("utf-8")
             soup = BeautifulSoup(html, "html.parser")
-        except Exception as e:
+        except Exception as ex:
             # raise
-            print("createBeautifulSoupObject Exception : ", e)
+            print("create_beautiful_soup_object Exception : ", ex)
         else:
             return soup
 
     @staticmethod
-    def parseURL(url):
+    def parse_url(url):
         """
         parse the url given as parameter and
-        returns an object ParseResult
+        returns an object parse_result
         """
         try:
-            parseResult = urlparse(url)
-        except Exception as e:
+            parse_result = urlparse(url)
+        except Exception as ex:
             # raise
-            print("parseURL Exception : ", e)
+            print("parse_url Exception : ", ex)
         else:
-            return parseResult
+            return parse_result
 
-    def parseProduct(self, url):
+    def parse_product(self, url):
         """
         parse the url given as parameter and
         returns a tuple with the data below :
@@ -75,15 +79,17 @@ class Parser:
         review_rating = "0"
         image_url = ""
 
-        soup = self.createBeautifulSoupObject(url)
+        soup = self.create_beautiful_soup_object(url)
 
         if soup:
             title = soup.h1.string.strip()
             image_url = parametres.NETLOC + '/' + soup.img.attrs['src'].replace("../", "")
             try:
-                product_description = soup.find(id="product_description").find_next_sibling().string.strip()
-            except AttributeError as e:
-                print("parseProduct Exception : ", e)
+                balise = soup.find(id="product_description")
+                product_description = balise.find_next_sibling().string.strip()
+            except AttributeError as ex:
+                print("parse_product Exception : ", ex)
+                print("product_page_url : ", product_page_url)
             for balise_a in soup.find_all('a'):
                 attr_href = balise_a.attrs['href']
                 if attr_href.startswith("../category/books/"):
@@ -106,40 +112,43 @@ class Parser:
                             number_available += caractere
                     if number_available == "":
                         number_available = "0"
-        return (product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax,
-                number_available, product_description, category, review_rating, image_url)
+        return (product_page_url, universal_product_code, title, price_including_tax,
+                price_excluding_tax, number_available, product_description, category,
+                review_rating, image_url)
 
-    def generateCategoryId(self, url):
+    def generate_category_id(self, url):
         """
             parses the url given as parameter and
-            return a categoryId
+            return a category_id
         """
-        path = self.parseURL(url).path.strip()
-        positionDebut = len(parametres.CATEGORY)
-        liste = (path[positionDebut:]).split('/')
+        path = self.parse_url(url).path.strip()
+        position_debut = len(parametres.CATEGORY)
+        liste = (path[position_debut:]).split('/')
         return liste[0]
 
-    def parseCategory(self, categoryId, url):
+    def parse_category(self, category_id, url):
         """
             parses the url given given as parameter and
-            generates an object generator on a list of tuples corresponding to the category's products
+            generates an object generator on a list of tuples
+            corresponding to the category's products
         """
         # Initialize variables
-        currentUrl = url
+        current_url = url
 
         # Parsing datas of the category
         while True:
-            soup = self.createBeautifulSoupObject(currentUrl)
+            soup = self.create_beautiful_soup_object(current_url)
             if soup:
                 for balise_h3 in soup.find_all('h3'):
                     lien = balise_h3.find('a').attrs['href'].replace("../", "")
-                    productUrl = "http://" + parametres.NETLOC + parametres.PRODUCT + lien
-                    yield self.parseProduct(productUrl)
+                    product_url = "http://" + parametres.NETLOC + parametres.PRODUCT + lien
+                    yield self.parse_product(product_url)
                 balise_next = soup.find('li', class_='next')
                 if balise_next:
                     lien = balise_next.find('a').attrs['href'].replace("../", "")
                     if lien:
-                        currentUrl = "http://" + parametres.NETLOC + parametres.CATEGORY + categoryId + '/' + lien
+                        current_url = "http://" + parametres.NETLOC + parametres.CATEGORY \
+                                      + category_id + '/' + lien
                     else:
                         break
                 else:
@@ -147,19 +156,18 @@ class Parser:
             else:
                 break
 
-    def parseCategories(self, url):
+    def parse_categories(self, url):
         """
             parses the url given as parameter and
             returns a list of tuples corresponding to the categories
         """
-        listOfCategories = []
-        soup = self.createBeautifulSoupObject(url)
-        i = 0
+        list_of_categories = []
+        soup = self.create_beautiful_soup_object(url)
         if soup:
             for balise_a in soup.find_all('a'):
                 if balise_a.attrs['href'].startswith(parametres.CATEGORY[1:]):
-                    urlCategory = "http://" + parametres.NETLOC + '/' + balise_a.attrs['href']
-                    categoryId = self.generateCategoryId(urlCategory)
-                    listOfProducts = self.parseCategory(categoryId, urlCategory)
-                    listOfCategories.append((categoryId, listOfProducts))
-        return listOfCategories
+                    category_url = "http://" + parametres.NETLOC + '/' + balise_a.attrs['href']
+                    category_id = self.generate_category_id(category_url)
+                    list_of_products = self.parse_category(category_id, category_url)
+                    list_of_categories.append((category_id, list_of_products))
+        return list_of_categories
