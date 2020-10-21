@@ -1,7 +1,11 @@
 # -*-coding:utf-8 -*
+"""
+Module recorder décrivant une classe Recorder pour enregistrer
+les données scrappées
+"""
+import pandas as pd
 from . import parametres
 from .parser import Parser
-import pandas as pd
 
 
 class Recorder:
@@ -10,50 +14,68 @@ class Recorder:
     """
 
     def __init__(self, url, runLevel):
-        path = Parser.parseURL(url).path.strip()
+        path = Parser.parse_url(url).path.strip()
         if runLevel == "PRODUCT":
-            positionDebut = len(parametres.PRODUCT)
-            liste = (path[positionDebut:]).split('/')
-            self.nomFichier = liste[0] + '.csv'
+            position_debut = len(parametres.PRODUCT)
+            liste = (path[position_debut:]).split('/')
+            self.nom_fichier = liste[0] + '.csv'
         elif runLevel == "CATEGORY":
-            positionDebut = len(parametres.CATEGORY)
-            liste = (path[positionDebut:]).split('/')
-            self.nomFichier = liste[0] + '.csv'
+            position_debut = len(parametres.CATEGORY)
+            liste = (path[position_debut:]).split('/')
+            self.nom_fichier = liste[0] + '.csv'
         else:
             pass
 
-    def saveProduct(self, product):
+    def save_product(self, product):
         """
             Saves a product into a csv file
         """
-        data = {'product_page_url': [product.productPageUrl, ],
-                'universal_ product_code': [product.universalProductCode, ],
+        data = {'product_page_url': [product.product_page_url, ],
+                'universal_ product_code': [product.universal_product_code, ],
                 'title': [product.title, ],
-                'price_including_tax': [product.priceIncludingTax, ],
-                'price_excluding_tax': [product.priceExcludingTax, ],
-                'number_available': [product.numberAvailable, ],
-                'product_description': [product.productDescription, ],
+                'price_including_tax': [product.price_including_tax, ],
+                'price_excluding_tax': [product.price_excluding_tax, ],
+                'number_available': [product.number_available, ],
+                'product_description': [product.product_description, ],
                 'category': [product.category, ],
-                'review_rating': [product.reviewRating, ],
-                'image_url': [product.imageUrl, ]}
-        df = pd.DataFrame(data)
-        df.to_csv(self.nomFichier, sep=';')
+                'review_rating': [product.review_rating, ],
+                'image_url': [product.image_url, ]}
+        data_frame = pd.DataFrame(data)
+        data_frame.to_csv(self.nom_fichier, sep=';')
 
-    def saveCategory(self, category):
+    def save_category(self, category):
         """
             Saves a category of products into a csv file
         """
 
-        self.nomFichier = category.categoryId + '.csv'
-        data = {'product_page_url': [product.productPageUrl for product in category.listOfProducts],
-                'universal_ product_code': [product.universalProductCode for product in category.listOfProducts],
-                'title': [product.title for product in category.listOfProducts],
-                'price_including_tax': [product.priceIncludingTax for product in category.listOfProducts],
-                'price_excluding_tax': [product.priceExcludingTax for product in category.listOfProducts],
-                'number_available': [product.numberAvailable for product in category.listOfProducts],
-                'product_description': [product.productDescription for product in category.listOfProducts],
-                'category': [product.category for product in category.listOfProducts],
-                'review_rating': [product.reviewRating for product in category.listOfProducts],
-                'image_url': [product.imageUrl for product in category.listOfProducts]}
-        df = pd.DataFrame(data)
-        df.to_csv(self.nomFichier, sep=';')
+        self.nom_fichier = category.category_id + '.csv'
+        data = {'product_page_url': [product.product_page_url
+                                     for product in category.list_of_products],
+                'universal_ product_code': [product.universal_product_code
+                                            for product in category.list_of_products],
+                'title': [product.title
+                          for product in category.list_of_products],
+                'price_including_tax': [product.price_including_tax
+                                        for product in category.list_of_products],
+                'price_excluding_tax': [product.price_excluding_tax
+                                        for product in category.list_of_products],
+                'number_available': [product.number_available
+                                     for product in category.list_of_products],
+                'product_description': [product.product_description
+                                        for product in category.list_of_products],
+                'category': [product.category
+                             for product in category.list_of_products],
+                'review_rating': [product.review_rating
+                                  for product in category.list_of_products],
+                'image_url': [product.image_url
+                              for product in category.list_of_products]}
+        data_frame = pd.DataFrame(data)
+        data_frame.to_csv(self.nom_fichier, sep=';')
+
+    def save_categories(self, list_of_categories):
+        """
+            Saves a list of categories of products
+            Each catgory in its proper csv file
+        """
+        for category in list_of_categories:
+            self.save_category(category)
