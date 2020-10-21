@@ -1,13 +1,14 @@
 # -*-coding:utf-8 -*
-from .parser import Parser 
-from .application import *
-from . import parametres
 import pandas as pd
+
+from .application import *
+from .parser import Parser
+
 
 class Recorder:
 
 	def __init__(self, url, runLevel):
-		path = (Parser().parseURL(url).path).strip()
+		path = Parser.parseURL(url).path.strip()
 		if runLevel == "PRODUCT":
 			positionDebut = len(parametres.PRODUCT) 
 			liste = (path[positionDebut:]).split('/')			
