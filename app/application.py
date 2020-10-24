@@ -124,5 +124,19 @@ class Application:
                 print("Saving data ...")
                 recorder = Recorder(self.url, self.run_level)
                 recorder.save_categories(list_of_categories)
+            self.display_stats(recorder)
         else:
             print("application run level {} not defined".format(self.run_level))
+
+    def display_stats(self, recorder):
+        """
+            Display the stats of scrapping data process
+        """
+        print("=============================================================")
+        print("Scrapping de l'url :", self.url)
+        print("=============================================================")
+        print("Nombre de produits     : {}".format(recorder.nombre_produits))
+        print("Nombre de catégories   : {}".format(recorder.nombre_categories))
+        print("Nombre de fichiers csv : {}".format(recorder.nombre_fichiers_csv))
+        print("Nombre d'images        : {}".format(recorder.nombre_images))
+        print("=============================================================")

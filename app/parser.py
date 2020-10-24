@@ -11,6 +11,26 @@ from bs4 import BeautifulSoup
 
 from . import parametres
 
+def alim_data(balise_th, balise_td, data):
+    """
+        Alimentation données produits suite et fin
+    """
+    if balise_th == "UPC":
+        data['universal_product_code'] = balise_td
+    if balise_th == "Price (excl. tax)":
+        data['price_excluding_tax'] = balise_td
+    if balise_th == "Price (incl. tax)":
+        data['price_including_tax'] = balise_td
+    if balise_th == "Number of reviews":
+        data['review_rating'] = balise_td.string
+    if balise_th.string == "Availability":
+        number_available = ""
+        for caractere in balise_td.string:
+            if caractere.isdigit():
+                number_available += caractere
+        if number_available == "":
+            number_available = "0"
+        data['number_available'] = number_available
 
 class Parser:
     """
@@ -83,7 +103,8 @@ class Parser:
 
         if soup:
             data['title'] = soup.h1.string.strip()
-            data['image_url'] = parametres.NETLOC + '/' + soup.img.attrs['src'].replace("../", "")
+            data['image_url'] = 'http://' + parametres.NETLOC + '/' \
+            + soup.img.attrs['src'].replace("../", "")
             try:
                 balise = soup.find(id="product_description")
                 data['product_description'] = balise.find_next_sibling().string.strip()
@@ -97,30 +118,8 @@ class Parser:
                     break
             for balise_tr in soup.find_all('tr'):
                 (balise_th, balise_td) = tuple(balise_tr.findChildren(limit=2))
-                self._alim_data(balise_th.string, balise_td.string, data)
+                alim_data(balise_th.string, balise_td.string, data)
         return data
-
-    def _alim_data(self, balise_th, balise_td, data):
-        """
-        Alimentation données produits suite et fin
-        """
-        if balise_th == "UPC":
-            data['universal_product_code'] = balise_td
-        if balise_th == "Price (excl. tax)":
-            data['price_excluding_tax'] = balise_td
-        if balise_th == "Price (incl. tax)":
-            data['price_including_tax'] = balise_td
-        if balise_th == "Number of reviews":
-            data['review_rating'] = balise_td.string
-        if balise_th.string == "Availability":
-            number_available = ""
-            for caractere in balise_td.string:
-                if caractere.isdigit():
-                    number_available += caractere
-            if number_available == "":
-                number_available = "0"
-            data['number_available'] = number_available
-
 
     def generate_category_id(self, url):
         """
