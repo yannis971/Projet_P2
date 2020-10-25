@@ -6,6 +6,7 @@ les données scrappées
 import os
 import shutil
 import urllib
+import progressbar
 import pandas as pd
 from .parser import Parser
 from . import parametres
@@ -95,14 +96,22 @@ class Recorder:
                 'image_url': [product.image_url
                               for product in category.list_of_products]}
         data_frame = pd.DataFrame(data)
+        print("Saving category - category_id : {}".format(category.category_id))
         data_frame.to_csv(self.nom_fichier, sep=';')
 
         self.nombre_fichiers_csv += 1
         self.nombre_categories += 1
         self.nombre_produits += len(category.list_of_products)
 
-        for product in category.list_of_products:
-            self.save_image(product.image_url)
+        i = 0
+        nombre_categories = len(category.list_of_products)
+        print("Saving images - category_id : {}".format(category.category_id))
+        with progressbar.ProgressBar(max_value=nombre_categories, redirect_stdout=True) \
+                as progress_bar:
+            for product in category.list_of_products:
+                self.save_image(product.image_url)
+                progress_bar.update(i)
+                i += 1
 
     def save_categories(self, list_of_categories):
         """
