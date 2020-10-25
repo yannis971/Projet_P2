@@ -40,9 +40,11 @@ En cas d'anomalie détectée en cours d'exécution, un message est affiché dans
 
 #### GitFlow
 
-* Branche `P02_01_dev` correspondant au scrapping d'un produit
-* Branche `P02_02_dev` correspondant au scrapping d'un produit ou d'une catégorie de produit
-* Branche `P02_03_dev` correspondant à la version finale du projet scrapping d'un produit ou d'une catégorie de produit ou du site dans son intégralité
+Les branches du projet :
+
+* Branche de développement `P02_01_dev` correspondant au scrapping d'un produit
+* Branche de développement `P02_02_dev` correspondant au scrapping d'un produit ou d'une catégorie de produit
+* Branche de développement `P02_03_dev` correspondant à la version finale du projet scrapping d'un produit ou d'une catégorie de produit ou du site dans son intégralité
 * Branche 'main' et 'master' : version finale
 
 
@@ -50,20 +52,40 @@ En cas d'anomalie détectée en cours d'exécution, un message est affiché dans
 ### 2) Installation du projet en local sur votre machine
 
 Sur votre machine créer un dossier dans lequel vous allez installer le projet.
-On nommera par exemple ce dossier `test`. (vous pouvez le nommer autrement, c'est juste pour avoir une référence dans la suite des explications).
+On nommera par exemple ce dossier `test`. (vous pouvez le nommer autrement, c'est juste pour avoir une référence dans la suite des explications)
 
-#### Première méthode : Téléchargement du fichier zip
+Aller sur le dépôt gitub : https://github.com/yannis971/Projet_P2
 
-Se rendre sur le dépot gitub : https://github.com/yannis971/Projet_P2
+Pour l'installation, il y a 2 méthodes possibles.
+
+#### 2.1) Première méthode : Téléchargement du fichier zip
 
 ![](images/p2_img_01.png)
 
-
 Dans l'onglet **<> Code** de la page ci-dessus, cliquer sur le bouton **Code** puis sur **Download ZIP**
 
-#### Deuxième méthode : Clonage du dépôt avec git
+Placer le fichier zip dans le dossier `test` et le dézipper.
 
-Sur la figure précédente, copier le lien https
+Ouvrir un terminal et se déplacer dans la racine du projet dossier '`test/Projet_P2-main/`'
+Passer à l'étape 3 pour configurer l'environnement virtuel
+
+#### 2.2) Deuxième méthode : Clonage du dépôt avec git
+
+Sur la figure précédente, copier le lien https : https://github.com/yannis971/Projet_P2.git
+
+Ouvrir un terminal et se déplacer dans le dossier `test` créé précédemment et taper la commande :
+
+`git clone ` suivi du lien https copié plus haut.
+
+soit : `git clone https://github.com/yannis971/Projet_P2.git`
+
+Se déplacer dans la racine du projet dossier '`test/Projet_P2`'
+
+Cela donne quelque chose comme ci-dessous :
+
+![](images/p2_img_02.png)
+
+Passer à l'étape 3 pour configurer l'environnement virtuel
 
 ### 3) Configuration de l'environnement virtuel
 
@@ -99,8 +121,6 @@ Toujours à la racine du projet, lancer l'une des 2 commandes suivantes :
 
 `python3 -m pip install -r requirements.txt`
 
-
-
 ### 4) Exécution
 
 #### 4.1) Renseigner l'URL à "scrapper"
@@ -131,7 +151,9 @@ Une fois le script terminé, vous pouvez consulter :
 * les fichiers csv dans le dossier `data`
 * les images dans le dossier `data/img/`
 
-
+Dans le répertoire `data`
+* la commande `ls *.csv || wc - l` permet de compter le nombre de fichiers csv
+* et `ls img/*.jpg || wc -l` le nombre d'images
 
 ### 5) Licence
 
@@ -141,8 +163,10 @@ Par conséquent, je publie le code de ce projet sous licence libre **GNU GPL V3*
 
 ### 6) Questions/Aide/Support
 
-E-mail : yannis.saliniere@gmail.com
+En cas de problèmes ou pour questions relatives à ce projet, vous pouvez me contacter via l'un des canaux suivants :
 
-Twitter : https://twitter.com/YSaliniere
+* e-mail : yannis.saliniere@gmail.com
 
-https://github.com/yannis971/Projet_P2/issues
+* twitter : https://twitter.com/YSaliniere
+
+* dans la rubrique issues du projet github : https://github.com/yannis971/Projet_P2/issues

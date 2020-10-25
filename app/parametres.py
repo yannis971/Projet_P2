@@ -5,7 +5,7 @@
 
 # Variable URL à modifier selon le scrapping que l'on souhaite faire
 
-URL = "https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html"
+URL = "https://books.toscrape.com/"
 
 # Liste des constantes
 
