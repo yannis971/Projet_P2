@@ -6,9 +6,9 @@
 Ce projet consiste en une application python exécutable à la demande qui permet de "scrapper" le site <a href="http://books.toscrape.com/">Books to Scrape</a> afin de suivre les prix des livres chez ce revendeur de livres en ligne.
 
 L'application s'exécute en mode console et possède 3 niveaux d'exécution :
-1. produit :
-2. catégorie :
-3. site :
+1. produit : scrapping d'un produit à partir de l'url de celui-ci
+2. catégorie : scrapping d'une catégorie à partir de l'url de celle-ci
+3. site : scrapping de toutes les catégories du site
 
 Pour chaque produit, elle récupère les informations suivantes :
 
@@ -110,7 +110,11 @@ Si l'installation a réussi, la commande vous renverra une ligne comme indiqué 
 
 Se placer à la racine du projet (dossier dans lequel se trouve le fichier main.py) et lancer la commande :
 
-`python3 -m venv env && source env/bin/activate`
+`python3 -m venv env`
+
+Une fois l'environnement virtuel  `env` créé, l'activer avec la commande :
+
+`source env/bin/activate`
 
 
 #### 3.4) Installer les dépendances du projet
@@ -143,7 +147,23 @@ Revenir à la racine du projet (dossier dans lequel se trouve le fichier main.py
 
 `python3 main.py`
 
-Le script se lance
+Attention, l'environnement virtuel doit être activé et les dépendances du projet installées (voir 3).
+
+Le script se lance...
+
+Dans les modes d'exécution catégorie et site, il y a des barres de progression qui s'affichent.
+
+Parsing des categories
+
+![](images/p2_img_03.png)
+
+Enregistrement des données
+
+![](images/p2_img_04.png)
+
+en attendant le compte rendu d'exécution en fin du programme
+
+![](images/p2_img_05.png)
 
 #### 4.3) Consulter et vérifier le résultat
 
@@ -157,7 +177,7 @@ Dans le répertoire `data`
 
 ### 5) Licence
 
-Pour ce projet, en plus de la bibliothèque standard `Python`, j'utilise les paquets `beautifulsoup4 version 4.9.3` et `pandas version 1.1.3` tous les 2 compatibles avec la licence **GPL**.
+Pour ce projet, en plus de la bibliothèque standard `Python`, j'utilise les paquets `beautifulsoup4 version 4.9.3`, `pandas version 1.1.3` et `progressbar2 version 3.53.1` tous les 3 compatibles avec la licence **GPL**.
 
 Par conséquent, je publie le code de ce projet sous licence libre **GNU GPL V3**
 
@@ -169,4 +189,4 @@ En cas de problèmes ou pour questions relatives à ce projet, vous pouvez me co
 
 * twitter : https://twitter.com/YSaliniere
 
-* dans la rubrique issues du projet github : https://github.com/yannis971/Projet_P2/issues
+* rubrique "issues" du projet github : https://github.com/yannis971/Projet_P2/issues
