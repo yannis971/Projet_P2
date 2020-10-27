@@ -2,10 +2,11 @@
 """
 Module parser avec une classe Parser pour scrapper les données
 """
-
 from urllib.parse import urlparse
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
+
+import progressbar
 
 from bs4 import BeautifulSoup
 
@@ -140,22 +141,30 @@ class Parser:
         # Initialize variables
         current_url = url
 
+        soup = self.create_beautiful_soup_object(current_url)
+
+        print("Parsing category - category_id : {}".format(category_id))
+
         # Parsing datas of the category
-        while True:
-            soup = self.create_beautiful_soup_object(current_url)
-            if soup:
-                for balise_h3 in soup.find_all('h3'):
+        while soup:
+            liste_balises_h3 = soup.find_all('h3')
+            nombre_balises_h3 = len(liste_balises_h3)
+            i = 0
+            with progressbar.ProgressBar(max_value=nombre_balises_h3, redirect_stdout=True) \
+                    as progress_bar:
+                for balise_h3 in liste_balises_h3:
                     lien = balise_h3.find('a').attrs['href'].replace("../", "")
                     product_url = "http://" + parametres.NETLOC + parametres.PRODUCT + lien
                     yield self.parse_product(product_url)
-                balise_next = soup.find('li', class_='next')
-                if balise_next:
-                    lien = balise_next.find('a').attrs['href'].replace("../", "")
-                    if lien:
-                        current_url = "http://" + parametres.NETLOC + parametres.CATEGORY \
+                    progress_bar.update(i)
+                    i += 1
+            balise_next = soup.find('li', class_='next')
+            if balise_next:
+                lien = balise_next.find('a').attrs['href'].replace("../", "")
+                if lien:
+                    current_url = "http://" + parametres.NETLOC + parametres.CATEGORY \
                                       + category_id + '/' + lien
-                    else:
-                        break
+                    soup = self.create_beautiful_soup_object(current_url)
                 else:
                     break
             else:
@@ -166,7 +175,6 @@ class Parser:
             parses the url given as parameter and
             returns a list of tuples corresponding to the categories
         """
-        list_of_categories = []
         soup = self.create_beautiful_soup_object(url)
         if soup:
             for balise_a in soup.find_all('a'):
@@ -174,5 +182,4 @@ class Parser:
                     category_url = "http://" + parametres.NETLOC + '/' + balise_a.attrs['href']
                     category_id = self.generate_category_id(category_url)
                     list_of_products = self.parse_category(category_id, category_url)
-                    list_of_categories.append((category_id, list_of_products))
-        return list_of_categories
+                    yield category_id, list_of_products

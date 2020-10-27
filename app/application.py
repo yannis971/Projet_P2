@@ -105,7 +105,7 @@ class Application:
         if self.run_level:
             if self.run_level == "PRODUCT":
                 product = Product(Parser().parse_product(self.url))
-                product.display()
+                #product.display()
                 recorder = Recorder(self.url, self.run_level)
                 recorder.save_product(product)
             elif self.run_level == "CATEGORY":
@@ -116,12 +116,10 @@ class Application:
                 recorder.save_category(category)
             else:
                 list_of_categories = []
-                print("Parsing data ...")
                 for (category_id, list_of_products) in Parser().parse_categories(self.url):
                     category = Category(category_id)
                     category.feed_products(list_of_products)
                     list_of_categories.append(category)
-                print("Saving data ...")
                 recorder = Recorder(self.url, self.run_level)
                 recorder.save_categories(list_of_categories)
             self.display_stats(recorder)
