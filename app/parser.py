@@ -143,32 +143,34 @@ class Parser:
 
         soup = self.create_beautiful_soup_object(current_url)
 
+        results_form = soup.find('form', class_='form-horizontal')
+        nombre_produits = int(results_form.find('strong').string)        
+
+        i = 0
+
         print("Parsing category - category_id : {}".format(category_id))
 
         # Parsing datas of the category
-        while soup:
-            liste_balises_h3 = soup.find_all('h3')
-            nombre_balises_h3 = len(liste_balises_h3)
-            i = 0
-            with progressbar.ProgressBar(max_value=nombre_balises_h3, redirect_stdout=True) \
-                    as progress_bar:
-                for balise_h3 in liste_balises_h3:
+        with progressbar.ProgressBar(max_value=nombre_produits, redirect_stdout=True) \
+                as progress_bar:
+            while soup:
+                for balise_h3 in soup.find_all('h3'):
                     lien = balise_h3.find('a').attrs['href'].replace("../", "")
                     product_url = "http://" + parametres.NETLOC + parametres.PRODUCT + lien
                     yield self.parse_product(product_url)
                     progress_bar.update(i)
                     i += 1
-            balise_next = soup.find('li', class_='next')
-            if balise_next:
-                lien = balise_next.find('a').attrs['href'].replace("../", "")
-                if lien:
-                    current_url = "http://" + parametres.NETLOC + parametres.CATEGORY \
+                balise_next = soup.find('li', class_='next')
+                if balise_next:
+                    lien = balise_next.find('a').attrs['href'].replace("../", "")
+                    if lien:
+                        current_url = "http://" + parametres.NETLOC + parametres.CATEGORY \
                                       + category_id + '/' + lien
-                    soup = self.create_beautiful_soup_object(current_url)
+                        soup = self.create_beautiful_soup_object(current_url)
+                    else:
+                        break
                 else:
                     break
-            else:
-                break
 
     def parse_categories(self, url):
         """

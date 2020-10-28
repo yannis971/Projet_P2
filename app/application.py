@@ -130,11 +130,13 @@ class Application:
         """
             Display the stats of scrapping data process
         """
-        print("=============================================================")
-        print("Scrapping de l'url :", self.url)
-        print("=============================================================")
+        message = "Scrapping de l'url : " + self.url
+        nombre_caracteres = len(message)
+        print("="*nombre_caracteres)
+        print(message)
+        print("="*nombre_caracteres)
         print("Nombre de produits     : {}".format(recorder.nombre_produits))
         print("Nombre de catégories   : {}".format(recorder.nombre_categories))
         print("Nombre de fichiers csv : {}".format(recorder.nombre_fichiers_csv))
         print("Nombre d'images        : {}".format(recorder.nombre_images))
-        print("=============================================================")
+        print("="*nombre_caracteres)
