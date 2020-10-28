@@ -1,14 +1,14 @@
-# Projet_P2
+# [DA Python] Projet_P2
 ## Utilisez les bases de Python pour l'analyse de marché
 
 ### 1) Description de l'application
 
-Ce projet consiste en une application python exécutable à la demande qui permet de "scrapper" le site <a href="http://books.toscrape.com/">Books to Scrape</a> afin de suivre les prix des livres chez ce revendeur de livres en ligne.
+Ce projet consiste en une application python exécutable à la demande qui permet de "scraper" le site <a href="http://books.toscrape.com/">Books to Scrape</a> afin de suivre les prix des livres chez ce revendeur de livres en ligne.
 
 L'application s'exécute en mode console et possède 3 niveaux d'exécution :
-1. produit : scrapping d'un produit à partir de l'url de celui-ci
-2. catégorie : scrapping d'une catégorie à partir de l'url de celle-ci
-3. site : scrapping de toutes les catégories du site
+1. produit : "scraping" d'un produit à partir de l'url de celui-ci
+2. catégorie : "scraping" d'une catégorie à partir de l'url de celle-ci
+3. site : "scraping" de toutes les catégories du site
 
 Pour chaque produit, elle récupère les informations suivantes :
 
@@ -24,7 +24,7 @@ Pour chaque produit, elle récupère les informations suivantes :
 * image_url
 
 
-Les données scrappées sont stockées dans des fichiers csv dans un répertoire `data` situé à la racine du projet. On stocke
+Les données "scrapées" sont stockées dans des fichiers csv dans un répertoire `data` situé à la racine du projet. On stocke
 un fichier csv produit si l'application est exécutée au niveau produit
 un fichier csv par catégorie pour les autres niveaux d'exécution
 
@@ -36,15 +36,17 @@ En fin de traitement, l'application affiche un compte-rendu sommaire d'exécutio
 
 En cas d'anomalie détectée en cours d'exécution, un message est affiché dans la console.  
 
-#### Architecture logicielle
+#### Architecture de l'application
 
-#### GitFlow
+![](images/p2_img_00.png)
+
+#### GitFlow du projet
 
 Les branches du projet :
 
-* Branche de développement `P02_01_dev` correspondant au scrapping d'un produit
-* Branche de développement `P02_02_dev` correspondant au scrapping d'un produit ou d'une catégorie de produit
-* Branche de développement `P02_03_dev` correspondant à la version finale du projet scrapping d'un produit ou d'une catégorie de produit ou du site dans son intégralité
+* Branche de développement `P02_01_dev` correspondant au "scraping" d'un produit
+* Branche de développement `P02_02_dev` correspondant au "scraping" d'un produit ou d'une catégorie de produit
+* Branche de développement `P02_03_dev` correspondant à la version finale du projet "scraping" d'un produit ou d'une catégorie de produit ou du site dans son intégralité
 * Branche 'main' et 'master' : version finale
 
 
@@ -67,6 +69,7 @@ Dans l'onglet **<> Code** de la page ci-dessus, cliquer sur le bouton **Code** p
 Placer le fichier zip dans le dossier `test` et le dézipper.
 
 Ouvrir un terminal et se déplacer dans la racine du projet dossier '`test/Projet_P2-main/`'
+
 Passer à l'étape 3 pour configurer l'environnement virtuel
 
 #### 2.2) Deuxième méthode : Clonage du dépôt avec git
@@ -131,10 +134,17 @@ Toujours à la racine du projet, lancer l'une des 2 commandes suivantes :
 
 Se déplacer dans le dossier app du projet et modifier la variable `URL` dans le fichier `parametres.py`
 
+Ci-après des exemples d'URL
+
+Pour "scraper" un livre :
+
 `URL = "https://books.toscrape.com/catalogue/scott-pilgrims-precious-little-life-scott-pilgrim-1_987/index.html"`
+
+Une catégorie de livres :
 
 `URL = "https://books.toscrape.com/catalogue/category/books/sequential-art_5/index.html"`
 
+Toutes les catégories du site :
 
 `URL = "http://books.toscrape.com/"`
 
