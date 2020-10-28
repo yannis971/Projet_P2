@@ -179,11 +179,11 @@ en attendant le compte rendu d'exécution en fin du programme
 
 Une fois le script terminé, vous pouvez consulter :
 * les fichiers csv dans le dossier `data`
-* les images dans le dossier `data/img/`
+* les images dans le dossier `data/img/` (un dossier par catégorie)
 
 Dans le répertoire `data`
 * la commande `ls *.csv || wc - l` permet de compter le nombre de fichiers csv
-* et `ls img/*.jpg || wc -l` le nombre d'images
+* et `ls img/*.jpg || wc -l` le nombre d'images dans chaque sous dossier de `data/img/`
 
 ### 5) Licence
 

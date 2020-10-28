@@ -19,9 +19,6 @@ def create_directory(data_path):
     if os.path.exists(data_path):
         shutil.rmtree(data_path)
     os.mkdir(data_path)
-    data_path += '/img'
-    os.mkdir(data_path)
-
 
 class Recorder:
     """
@@ -31,6 +28,7 @@ class Recorder:
     def __init__(self, url, runLevel):
         path = Parser.parse_url(url).path.strip()
         create_directory(parametres.DATA_DIRECTORY)
+        create_directory(parametres.IMG_DIRECTORY)
         self.nombre_produits = 0
         self.nombre_categories = 0
         self.nombre_fichiers_csv = 0
@@ -59,13 +57,13 @@ class Recorder:
         data_frame.to_csv(self.nom_fichier, sep=';')
         self.nombre_produits += 1
         self.nombre_fichiers_csv += 1
-        self.save_image(product.image_url)
+        self.save_image(product.image_url,parametres.IMG_DIRECTORY)
 
-    def save_image(self, image_url):
+    def save_image(self, image_url, path):
         """
         Downloads and saves the image from an image url given as parameter
         """
-        nom_fichier = parametres.DATA_DIRECTORY + '/img/' + image_url.split('/')[-1]
+        nom_fichier = path + image_url.split('/')[-1]
         urllib.request.urlretrieve(image_url, nom_fichier)
         self.nombre_images += 1
 
@@ -103,13 +101,15 @@ class Recorder:
         self.nombre_categories += 1
         self.nombre_produits += len(category.list_of_products)
 
+        img_path = parametres.IMG_DIRECTORY + category.category_id + '/'
+        create_directory(img_path)
+
         i = 0
-        nombre_categories = len(category.list_of_products)
-        print("Saving images - category_id : {}".format(category.category_id))
+        nombre_categories = len(category.list_of_products)        
         with progressbar.ProgressBar(max_value=nombre_categories, redirect_stdout=True) \
                 as progress_bar:
             for product in category.list_of_products:
-                self.save_image(product.image_url)
+                self.save_image(product.image_url, img_path)
                 progress_bar.update(i)
                 i += 1
 
