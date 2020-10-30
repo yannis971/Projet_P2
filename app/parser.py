@@ -144,7 +144,7 @@ class Parser:
         soup = self.create_beautiful_soup_object(current_url)
 
         results_form = soup.find('form', class_='form-horizontal')
-        nombre_produits = int(results_form.find('strong').string)        
+        nombre_produits = int(results_form.find('strong').string)
 
         i = 0
 

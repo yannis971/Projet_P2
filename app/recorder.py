@@ -57,7 +57,7 @@ class Recorder:
         data_frame.to_csv(self.nom_fichier, sep=';')
         self.nombre_produits += 1
         self.nombre_fichiers_csv += 1
-        self.save_image(product.image_url,parametres.IMG_DIRECTORY)
+        self.save_image(product.image_url, parametres.IMG_DIRECTORY)
 
     def save_image(self, image_url, path):
         """
@@ -105,7 +105,7 @@ class Recorder:
         create_directory(img_path)
 
         i = 0
-        nombre_categories = len(category.list_of_products)        
+        nombre_categories = len(category.list_of_products)
         with progressbar.ProgressBar(max_value=nombre_categories, redirect_stdout=True) \
                 as progress_bar:
             for product in category.list_of_products:
