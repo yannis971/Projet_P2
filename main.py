@@ -1,10 +1,14 @@
 # -*-coding:utf-8 -*
-from app.parametres import url
-from app.application import Application
+"""
+    Module main qui lance l'application
+"""
 import time
-timeDebut = time.gmtime()
-appInstance = Application(url)
-appInstance.run()
-timeFin = time.gmtime()
-print("Debut :", time.strftime("%a, %d %b %Y %H:%M:%S +0000", timeDebut))
-print("Fin :", time.strftime("%a, %d %b %Y %H:%M:%S +0000", timeFin))
+from app.parametres import URL
+from app.application import Application
+
+TIME_DEBUT = time.gmtime()
+APP_INSTANCE = Application(URL)
+APP_INSTANCE.run()
+TIME_FIN = time.gmtime()
+print("Debut du traitement le :", time.strftime("%a, %d %b %Y %H:%M:%S +0000", TIME_DEBUT))
+print("Fin du traitement   le :", time.strftime("%a, %d %b %Y %H:%M:%S +0000", TIME_FIN))
